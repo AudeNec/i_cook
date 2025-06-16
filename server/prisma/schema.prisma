@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model List {
+  id          Int               @id @default(autoincrement())
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  recipes     Recipe[]          @relation("ListRecipes")
+  ingredients List_ingredient[] @relation("ListToIngredients")
+}
+
+model Recipe {
+  id        Int                  @id @default(autoincrement())
+  name      String
+  createdAt DateTime             @default(now())
+
+  lists         List[]               @relation("ListRecipes")
+  ingredients Recipe_ingredient[]
+}
+
+model Ingredient {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  recipes Recipe_ingredient[]
+  lists List_ingredient[]
+}
+
+model Recipe_ingredient {
+  recipeId    Int
+  ingredientId Int
+
+  recipe      Recipe     @relation(fields: [recipeId], references: [id])
+  ingredient  Ingredient @relation(fields: [ingredientId], references: [id])
+
+  quantity    Float
+  unit        String
+
+  @@id([recipeId, ingredientId])
+}
+
+model List_ingredient {
+  listId       Int
+  ingredientId Int
+
+  list         List       @relation("ListToIngredients", fields: [listId], references: [id])
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+
+  bought       Boolean
+
+  @@id([listId, ingredientId])
+}
