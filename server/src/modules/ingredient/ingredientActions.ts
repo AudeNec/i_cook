@@ -15,4 +15,26 @@ const browse: RequestHandler = async (_req, res) => {
   }
 };
 
-export default { browse };
+const add: RequestHandler = async (req, res) => {
+  const { name, unit } = req.body;
+  if (!name || !unit) {
+    res.status(400).json({ error: "Name and unit are required." });
+    return;
+  }
+
+  try {
+    const newIngredient = await prisma.ingredient.create({
+      data: {
+        name,
+        unit,
+      },
+    });
+    res.status(201).json(newIngredient);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: "An error occurred while adding the ingredient." });
+  }
+};
+
+export default { browse, add };

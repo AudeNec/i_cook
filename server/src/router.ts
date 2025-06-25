@@ -11,6 +11,7 @@ router.get("/api/recipes/:id", recipeActions.read);
 router.post("/api/recipes/add", recipeActions.add);
 
 router.get("/api/ingredients", ingredientActions.browse);
+router.post("api/ingredients/add", ingredientActions.add);
 
 router.get("/api/months", monthActions.browse);
 

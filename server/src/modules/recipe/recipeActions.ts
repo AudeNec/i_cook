@@ -40,7 +40,47 @@ const add: RequestHandler = async (req, res) => {
         name,
       },
     });
-    for (const ingredient of ingredients) {
+
+    console.log("New recipe created:", newRecipe);
+
+    let ingredientsWithIds;
+
+    console.log("Ingredients received:", ingredients);
+    try {
+      ingredientsWithIds = await Promise.all(
+        ingredients.map(async (ingredient: any) => {
+          if (ingredient.id === "new") {
+            const newIngredient = await prisma.ingredient.create({
+              data: {
+                name: ingredient.name,
+                unit: ingredient.unit,
+              },
+            });
+            return { ...newIngredient, quantity: ingredient.quantity };
+          } else {
+            const existing = await prisma.ingredient.findUnique({
+              where: { id: Number(ingredient.id) },
+            });
+            if (!existing) {
+              throw new Error(
+                `Ingrédient avec id ${ingredient.id} introuvable.`
+              );
+            }
+            return { ...existing, quantity: ingredient.quantity };
+          }
+        })
+      );
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        error: "Erreur lors du traitement des ingrédients.",
+      });
+      return;
+    }
+
+    console.log("Ingredients with IDs:", ingredientsWithIds);
+
+    for (const ingredient of ingredientsWithIds) {
       await prisma.recipe_ingredient.create({
         data: {
           recipeId: newRecipe.id,

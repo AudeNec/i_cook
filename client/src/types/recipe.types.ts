@@ -12,3 +12,8 @@ export type RecipeDetails = {
   ingredients: IngredientWithQuantity[];
   season: Month[];
 };
+
+export type NewRecipe = {
+  name: string;
+  ingredients: IngredientWithQuantity[];
+};
