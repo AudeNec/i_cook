@@ -18,5 +18,9 @@ router.get("/api/lists/current", listActions.findCurrent);
 router.get("/api/lists/search/:id", listActions.read);
 router.post("/api/lists", listActions.add);
 router.put("/api/lists/recipes/:id", listActions.changeRecipe);
+router.patch(
+  "/api/lists/:listId/ingredients/:ingredientId",
+  listActions.updateIngredientBought
+);
 
 export default router;

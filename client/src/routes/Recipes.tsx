@@ -79,7 +79,7 @@ export const Recipes = () => {
       <section>
         {recipes.map((recipe) => {
           return (
-            <article>
+            <article key={recipe.id}>
               <h2>{recipe.name}</h2>
               <button>Voir plus</button>
               <button type="button" onClick={() => changeInList(recipe.id)}>

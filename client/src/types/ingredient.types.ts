@@ -1,7 +1,7 @@
 import type { Month } from "./month.types";
 
 export interface Ingredient {
-  id: string;
+  id: number;
   name: string;
   season?: Month[];
 }
@@ -9,4 +9,5 @@ export interface Ingredient {
 export interface IngredientWithQuantity extends Ingredient {
   quantity: number;
   unit: string;
+  bought: boolean;
 }

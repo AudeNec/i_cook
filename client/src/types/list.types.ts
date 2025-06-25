@@ -1,8 +1,8 @@
-import type { Ingredient } from "./ingredient.types";
-import type { Recipe } from "./recipe.types";
+import type { IngredientWithQuantity } from "./ingredient.types";
+import type { RecipeDetails } from "./recipe.types";
 
 export type List = {
   id: string;
-  recipes: Recipe[];
-  ingredients: Ingredient[];
+  recipes: RecipeDetails[];
+  ingredients: IngredientWithQuantity[];
 };

@@ -28,6 +28,7 @@ model Recipe {
 model Ingredient {
   id   Int    @id @default(autoincrement())
   name String
+  unit        String
 
   recipes Recipe_ingredient[]
   lists List_ingredient[]
@@ -41,7 +42,6 @@ model Recipe_ingredient {
   ingredient  Ingredient @relation(fields: [ingredientId], references: [id])
 
   quantity    Float
-  unit        String
 
   @@id([recipeId, ingredientId])
 }

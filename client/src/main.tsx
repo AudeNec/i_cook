@@ -27,7 +27,7 @@ const router = createBrowserRouter([
         path: "/recettes/:id",
         element: <RecipeDetails />,
         loader: ({ params }) => {
-          return getRecipeDetails(params.id ?? "0");
+          return getRecipeDetails(params.id ? Number(params.id) : 0);
         },
       },
       {

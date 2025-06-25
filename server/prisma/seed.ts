@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+
 const prisma = new PrismaClient();
 
 async function main() {
@@ -6,18 +7,18 @@ async function main() {
 
   const ingredients = await prisma.ingredient.createMany({
     data: [
-      { name: "Oignon rouge" },
-      { name: "Ail" },
-      { name: "Chèvre frais" },
-      { name: "Pâte à tarte" },
-      { name: "Crème épaisse" },
-      { name: "Fromage râpé" },
-      { name: "Noix concassées" },
-      { name: "Origan séché" },
-      { name: "Huile d'olive" },
-      { name: "Vinaigre balsamique noir" },
-      { name: "Moutarde" },
-      { name: "Miel" },
+      { name: "Oignon rouge", unit: "pièce" },
+      { name: "Ail", unit: "gousse" },
+      { name: "Chèvre frais", unit: "g" },
+      { name: "Pâte à tarte", unit: "rouleau" },
+      { name: "Crème épaisse", unit: "g" },
+      { name: "Fromage râpé", unit: "g" },
+      { name: "Noix concassées", unit: "g" },
+      { name: "Origan séché", unit: "càc" },
+      { name: "Huile d'olive", unit: "càs" },
+      { name: "Vinaigre balsamique noir", unit: "càs" },
+      { name: "Moutarde", unit: "càc" },
+      { name: "Miel", unit: "càc" },
     ],
     skipDuplicates: true,
   });
@@ -43,73 +44,61 @@ async function main() {
         recipeId: recipe.id,
         ingredientId: findId("Oignon rouge"),
         quantity: 3,
-        unit: "pièce",
       },
       {
         recipeId: recipe.id,
         ingredientId: findId("Ail"),
         quantity: 1,
-        unit: "gousse",
       },
       {
         recipeId: recipe.id,
         ingredientId: findId("Chèvre frais"),
         quantity: 100,
-        unit: "g",
       },
       {
         recipeId: recipe.id,
         ingredientId: findId("Pâte à tarte"),
         quantity: 1,
-        unit: "rouleau",
       },
       {
         recipeId: recipe.id,
         ingredientId: findId("Miel"),
         quantity: 1,
-        unit: "càc",
       },
       {
         recipeId: recipe.id,
         ingredientId: findId("Crème épaisse"),
         quantity: 50,
-        unit: "g",
       },
       {
         recipeId: recipe.id,
         ingredientId: findId("Fromage râpé"),
         quantity: 75,
-        unit: "g",
       },
       {
         recipeId: recipe.id,
         ingredientId: findId("Noix concassées"),
         quantity: 50,
-        unit: "g",
       },
       {
         recipeId: recipe.id,
         ingredientId: findId("Origan séché"),
         quantity: 1,
-        unit: "càc",
       },
       {
         recipeId: recipe.id,
         ingredientId: findId("Huile d'olive"),
         quantity: 2,
-        unit: "càs",
       },
       {
         recipeId: recipe.id,
         ingredientId: findId("Vinaigre balsamique noir"),
         quantity: 2,
-        unit: "càs",
       },
       {
         recipeId: recipe.id,
         ingredientId: findId("Moutarde"),
         quantity: 1,
-        unit: "càc",
       },
     ],
   });

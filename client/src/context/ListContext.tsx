@@ -8,13 +8,13 @@ import {
 import { toast } from "react-toastify";
 
 type ListContextType = {
-  currentListId: string | null;
+  currentListId: number | null;
 };
 
 const ListContext = createContext<ListContextType | null>(null);
 
 export function ListProvider({ children }: { children: ReactNode }) {
-  const [currentListId, setCurrentListId] = useState<string | null>(null);
+  const [currentListId, setCurrentListId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchOrCreateList = async () => {

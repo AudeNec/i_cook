@@ -1,4 +1,4 @@
-export const fetchList = async (id: string) => {
+export const fetchList = async (id: number) => {
   try {
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}/api/lists/search/${id}`

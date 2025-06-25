@@ -40,6 +40,16 @@ const add: RequestHandler = async (req, res) => {
         name,
       },
     });
+    for (const ingredient of ingredients) {
+      await prisma.recipe_ingredient.create({
+        data: {
+          recipeId: newRecipe.id,
+          ingredientId: ingredient.id,
+          quantity: ingredient.quantity,
+        },
+      });
+    }
+
     res.status(201).json(newRecipe);
   } catch (error) {
     res

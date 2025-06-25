@@ -1,0 +1,11 @@
+
+> server@1.0.0 dev
+> tsx -r dotenv/config ./src/main
+
+Server is listening on port 3000
+>> heartbeat
+>> heartbeat
+>> heartbeat
+>> heartbeat
+>> heartbeat
+>> heartbeat
