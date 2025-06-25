@@ -1,12 +1,12 @@
 import type { RequestHandler } from "express";
 
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { recipeRepository } from "./recipeRepo";
+import { IngredientRepository } from "../ingredient/ingredientRepo";
+import { recipeIngredientRepository } from "../recipe_ingredient/recipeIngredientRepo";
 
 const browse: RequestHandler = async (_req, res) => {
   try {
-    const recipes = await prisma.recipe.findMany();
+    const recipes = await recipeRepository.readAll();
     res.status(200).json(recipes);
   } catch {
     () => {
@@ -19,9 +19,7 @@ const browse: RequestHandler = async (_req, res) => {
 
 const read: RequestHandler = async (req, res) => {
   try {
-    const recipe = await prisma.recipe.findUnique({
-      where: { id: parseInt(req.params.id) },
-    });
+    const recipe = await recipeRepository.readById(Number(req.params.id));
     res.status(200).json(recipe);
   } catch {
     () => {
@@ -35,11 +33,7 @@ const read: RequestHandler = async (req, res) => {
 const add: RequestHandler = async (req, res) => {
   try {
     const { name, ingredients } = req.body;
-    const newRecipe = await prisma.recipe.create({
-      data: {
-        name,
-      },
-    });
+    const newRecipe = await recipeRepository.create(name);
 
     console.log("New recipe created:", newRecipe);
 
@@ -50,17 +44,15 @@ const add: RequestHandler = async (req, res) => {
       ingredientsWithIds = await Promise.all(
         ingredients.map(async (ingredient: any) => {
           if (ingredient.id === "new") {
-            const newIngredient = await prisma.ingredient.create({
-              data: {
-                name: ingredient.name,
-                unit: ingredient.unit,
-              },
-            });
+            const newIngredient = await IngredientRepository.create(
+              ingredient.name,
+              ingredient.unit
+            );
             return { ...newIngredient, quantity: ingredient.quantity };
           } else {
-            const existing = await prisma.ingredient.findUnique({
-              where: { id: Number(ingredient.id) },
-            });
+            const existing = await IngredientRepository.readById(
+              Number(ingredient.id)
+            );
             if (!existing) {
               throw new Error(
                 `Ingrédient avec id ${ingredient.id} introuvable.`
@@ -81,13 +73,11 @@ const add: RequestHandler = async (req, res) => {
     console.log("Ingredients with IDs:", ingredientsWithIds);
 
     for (const ingredient of ingredientsWithIds) {
-      await prisma.recipe_ingredient.create({
-        data: {
-          recipeId: newRecipe.id,
-          ingredientId: ingredient.id,
-          quantity: ingredient.quantity,
-        },
-      });
+      await recipeIngredientRepository.create(
+        newRecipe.id,
+        ingredient.id,
+        ingredient.quantity
+      );
     }
 
     res.status(201).json(newRecipe);

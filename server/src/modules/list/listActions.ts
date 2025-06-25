@@ -1,32 +1,15 @@
 import type { RequestHandler } from "express";
 
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { listRepository } from "./listRepo";
+import { recipeIngredientRepository } from "../recipe_ingredient/recipeIngredientRepo";
+import { AggregatesRepository } from "../aggregates/aggregatesRepo";
+import { listIngredientRepository } from "../list_ingredient/listIngredientRepo";
 
 const read: RequestHandler = async (req, res) => {
   const { id } = req.params;
   const listId = parseInt(id);
   try {
-    const list = await prisma.list.findUnique({
-      where: { id: listId },
-      include: {
-        recipes: {
-          include: {
-            ingredients: {
-              include: {
-                ingredient: true,
-              },
-            },
-          },
-        },
-        ingredients: {
-          include: {
-            ingredient: true,
-          },
-        },
-      },
-    });
+    const list = await listRepository.read(listId);
 
     if (!list) {
       res.status(404).json({ error: "No list found." });
@@ -73,17 +56,15 @@ const read: RequestHandler = async (req, res) => {
 
 const findCurrent: RequestHandler = async (_req, res) => {
   try {
-    const currentList = await prisma.list.findFirst({
-      orderBy: { createdAt: "desc" },
-    });
+    const currentListId = await listRepository.readCurrentId();
 
-    if (!currentList) {
+    if (!currentListId) {
       res.status(404).json({ error: "No current list found." });
       return;
     }
 
     res.status(200).json({
-      id: currentList.id,
+      id: currentListId,
     });
   } catch (error) {
     console.error("Error in readCurrent:", error);
@@ -95,10 +76,8 @@ const findCurrent: RequestHandler = async (_req, res) => {
 
 const add: RequestHandler = async (_req, res) => {
   try {
-    const newList = await prisma.list.create({
-      data: {},
-    });
-    res.status(201).json(newList.id);
+    const newListId = await listRepository.create();
+    res.status(201).json(newListId);
   } catch (error) {
     res
       .status(500)
@@ -111,17 +90,8 @@ const changeRecipe: RequestHandler = async (req, res) => {
 
   try {
     const [recipeIngredients, list] = await Promise.all([
-      prisma.recipe_ingredient.findMany({
-        where: { recipeId },
-        select: { ingredientId: true },
-      }),
-      prisma.list.findFirst({
-        orderBy: { createdAt: "desc" },
-        include: {
-          recipes: { select: { id: true } },
-          ingredients: { select: { ingredientId: true } },
-        },
-      }),
+      recipeIngredientRepository.readByRecipeId(recipeId),
+      listRepository.readCurrent(),
     ]);
 
     if (!list) {
@@ -134,48 +104,23 @@ const changeRecipe: RequestHandler = async (req, res) => {
     const recipeIngredientIds = recipeIngredients.map((ri) => ri.ingredientId);
 
     if (isInList) {
-      const otherUsages = await prisma.recipe_ingredient.findMany({
-        where: {
-          ingredientId: { in: recipeIngredientIds },
-          recipe: {
-            lists: {
-              some: {
-                id: listId,
-                NOT: {
-                  recipes: {
-                    some: { id: recipeId },
-                  },
-                },
-              },
-            },
-          },
-        },
-        select: { ingredientId: true },
-      });
+      const otherUsages = await recipeIngredientRepository.readOtherUsages(
+        recipeIngredientIds,
+        recipeId,
+        listId
+      );
 
       const stillUsedIds = new Set(otherUsages.map((ri) => ri.ingredientId));
       const toRemove = recipeIngredientIds.filter(
         (id) => !stillUsedIds.has(id)
       );
 
-      await prisma.$transaction([
-        prisma.list.update({
-          where: { id: listId },
-          data: {
-            recipes: { disconnect: { id: recipeId } },
-          },
-        }),
-        ...toRemove?.map((ingredientId) =>
-          prisma.list_ingredient.delete({
-            where: {
-              listId_ingredientId: {
-                listId,
-                ingredientId,
-              },
-            },
-          })
-        ),
-      ]);
+      await AggregatesRepository.updateList(
+        "delete",
+        listId,
+        recipeId,
+        toRemove
+      );
 
       res.status(200).json({ message: "Recipe removed from list." });
     } else {
@@ -187,23 +132,7 @@ const changeRecipe: RequestHandler = async (req, res) => {
         (id) => !existingIngredientIds.has(id)
       );
 
-      await prisma.$transaction([
-        prisma.list.update({
-          where: { id: listId },
-          data: {
-            recipes: { connect: { id: recipeId } },
-          },
-        }),
-        ...toAdd.map((ingredientId) =>
-          prisma.list_ingredient.create({
-            data: {
-              listId,
-              ingredientId,
-              bought: false,
-            },
-          })
-        ),
-      ]);
+      await AggregatesRepository.updateList("add", listId, recipeId, toAdd);
 
       res.status(200).json({ message: "Recipe added to list." });
     }
@@ -220,15 +149,11 @@ const updateIngredientBought: RequestHandler = async (req, res) => {
   const bought = req.body.bought;
 
   try {
-    const updatedIngredient = await prisma.list_ingredient.update({
-      where: {
-        listId_ingredientId: {
-          listId: parseInt(listId),
-          ingredientId: parseInt(ingredientId),
-        },
-      },
-      data: { bought },
-    });
+    const updatedIngredient = await listIngredientRepository.update(
+      parseInt(listId),
+      parseInt(ingredientId),
+      bought
+    );
 
     res.status(200).json(updatedIngredient);
   } catch (error) {

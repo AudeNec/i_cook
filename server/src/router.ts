@@ -2,7 +2,6 @@ import express from "express";
 import recipeActions from "./modules/recipe/recipeActions";
 import ingredientActions from "./modules/ingredient/ingredientActions";
 import listActions from "./modules/list/listActions";
-import monthActions from "./modules/month/monthActions";
 
 const router = express.Router();
 
@@ -12,8 +11,6 @@ router.post("/api/recipes/add", recipeActions.add);
 
 router.get("/api/ingredients", ingredientActions.browse);
 router.post("api/ingredients/add", ingredientActions.add);
-
-router.get("/api/months", monthActions.browse);
 
 router.get("/api/lists/current", listActions.findCurrent);
 router.get("/api/lists/search/:id", listActions.read);

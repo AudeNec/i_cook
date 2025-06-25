@@ -1,12 +1,14 @@
 import type { RequestHandler } from "express";
 
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { IngredientRepository } from "./ingredientRepo";
 
 const browse: RequestHandler = async (_req, res) => {
   try {
-    const ingredients = await prisma.ingredient.findMany();
+    const ingredients = await IngredientRepository.readAll();
+    if (!ingredients || ingredients.length === 0) {
+      res.status(404).json({ error: "No ingredients found." });
+      return;
+    }
     res.status(200).json(ingredients);
   } catch (error) {
     res
@@ -23,12 +25,7 @@ const add: RequestHandler = async (req, res) => {
   }
 
   try {
-    const newIngredient = await prisma.ingredient.create({
-      data: {
-        name,
-        unit,
-      },
-    });
+    const newIngredient = await IngredientRepository.create(name, unit);
     res.status(201).json(newIngredient);
   } catch (error) {
     res
