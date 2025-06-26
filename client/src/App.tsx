@@ -1,6 +1,5 @@
 import { Outlet, useLocation } from "react-router-dom";
 
-import "./App.css";
 import { Nav } from "./components/Nav";
 import { ToastContainer } from "react-toastify";
 import { ListProvider } from "./context/ListContext";
@@ -10,15 +9,15 @@ function App() {
   const hideNavBar = location.pathname === "/";
 
   return (
-    <>
+    <body className="bg-primary-dark">
       <ListProvider>
-        <main>
-          <ToastContainer className="toast-position" stacked autoClose={3000} />
+        <ToastContainer className="toast-position" stacked autoClose={3000} />
+        <main className="mx-64 flex flex-col justify-stretch content-center h-screen">
           <Outlet />
         </main>
         {!hideNavBar && <Nav />}
       </ListProvider>
-    </>
+    </body>
   );
 }
 

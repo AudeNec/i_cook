@@ -7,6 +7,7 @@ const router = express.Router();
 
 router.get("/api/recipes", recipeActions.browse);
 router.get("/api/recipes/:id", recipeActions.read);
+router.get("/api/recipes/:recipeId/:listId", recipeActions.isInList);
 router.post("/api/recipes/add", recipeActions.add);
 
 router.get("/api/ingredients", ingredientActions.browse);

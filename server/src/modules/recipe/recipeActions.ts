@@ -3,6 +3,7 @@ import type { RequestHandler } from "express";
 import { recipeRepository } from "./recipeRepo";
 import { IngredientRepository } from "../ingredient/ingredientRepo";
 import { recipeIngredientRepository } from "../recipe_ingredient/recipeIngredientRepo";
+import { listRepository } from "../list/listRepo";
 
 const browse: RequestHandler = async (_req, res) => {
   try {
@@ -88,8 +89,24 @@ const add: RequestHandler = async (req, res) => {
   }
 };
 
+const isInList: RequestHandler = async (req, res) => {
+  const { recipeId, listId } = req.params;
+  try {
+    const isInList = await listRepository.isRecipeInList(
+      Number(recipeId),
+      Number(listId)
+    );
+    res.status(200).json({ isInList });
+  } catch (error) {
+    res.status(500).json({
+      error: "An error occurred while checking if the recipe is in the list.",
+    });
+  }
+};
+
 export default {
   browse,
   read,
   add,
+  isInList,
 };

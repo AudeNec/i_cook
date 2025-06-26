@@ -60,4 +60,12 @@ export const listRepository = {
       },
     });
   },
+
+  isRecipeInList: async (recipeId: number, listId: number) => {
+    const list = await prisma.list.findUnique({
+      where: { id: listId },
+      include: { recipes: true },
+    });
+    return list ? list.recipes.some((recipe) => recipe.id === recipeId) : false;
+  }
 };

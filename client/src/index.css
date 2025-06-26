@@ -1,0 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Sarina&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lora:ital,wght@1,400..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Hind+Madurai:wght@300;400;500;600;700&display=swap");
+
+@import "tailwindcss";
+
+@import "tw-animate-css";
+
+@theme {
+  --font-title: "Sarina", cursive, sans-serif;
+  --font-subtitle: "Lora", "serif", serif;
+  --font-paragraph: "Hind Madurai", "sans-serif", sans-serif;
+
+  --color-primary: #606c38ff;
+  --color-primary-dark: #141c0bff;
+  --color-white: #fefae0ff;
+  --color-secondary: #dda15eff;
+  --color-secondary-dark: #bc6c25ff;
+}

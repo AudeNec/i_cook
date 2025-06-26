@@ -1,15 +1,14 @@
-import { Link } from "react-router-dom";
+import { Header } from "../components/Header";
+import { HomeButton } from "../components/HomeButton";
 
 export const Home = () => {
   return (
     <>
-      <header>
-        <h1>Hello Aude !</h1>
-      </header>
-      <section>
-        <Link to="/recettes">Recettes</Link>
-        <Link to="/liste">Liste</Link>
-        <Link to="/recettes/ajouter">Ajouter Recette</Link>
+      <Header content="Hello Aude !" />
+      <section className="flex flex-col justify-center content-center gap-4 mt-4">
+        <HomeButton link="/recettes" title="Recettes" />
+        <HomeButton link="/liste" title="Liste" />
+        <HomeButton link="/recettes/ajouter" title="Ajouter une recette" />
       </section>
     </>
   );
