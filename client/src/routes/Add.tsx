@@ -1,4 +1,4 @@
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, useWatch } from "react-hook-form";
 import { useEffect, useState } from "react";
 import type { NewRecipe } from "../types/recipe.types";
 import { addRecipe } from "../services/addRecipe.service";
@@ -15,6 +15,8 @@ export const Add = () => {
     console.log("Submitting:", data);
     addRecipe(data);
   };
+
+  console.log("render");
 
   const [existingIngredients, setExistingIngredients] = useState<
     {
@@ -35,7 +37,10 @@ export const Add = () => {
     fetchIngredients();
   }, []);
 
-  const watchIngredients = watch("ingredients");
+  const watchIngredients = useWatch({
+    control,
+    name: "ingredients",
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

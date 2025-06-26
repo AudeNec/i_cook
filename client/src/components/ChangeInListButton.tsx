@@ -45,7 +45,6 @@ export const ChangeInListButton = ({ id }: changeInListProps) => {
     }
   };
 
-  console.log("isInList", isInList);
   return (
     <button
       type="button"
