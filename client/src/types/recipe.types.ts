@@ -15,5 +15,5 @@ export type RecipeDetails = {
 
 export type NewRecipe = {
   name: string;
-  ingredients: IngredientWithQuantity[];
+  ingredients: Array<IngredientWithQuantity>;
 };

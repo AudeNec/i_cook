@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Trash } from "@/components/animate-ui/icons/trash";
 
 export const Add = () => {
-  const { register, control, handleSubmit, watch } = useForm<NewRecipe>();
+  const { register, control, handleSubmit } = useForm<NewRecipe>();
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -131,7 +131,9 @@ export const Add = () => {
 
           <button
             type="button"
-            onClick={() => append({ unit: "", quantity: 1, name: "" })}
+            onClick={() =>
+              append({ id: "new", unit: "", quantity: 1, name: "" })
+            }
           >
             Ajouter un ingrédient
           </button>

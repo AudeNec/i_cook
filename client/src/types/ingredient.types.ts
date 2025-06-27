@@ -1,19 +1,19 @@
 import type { Month } from "./month.types";
 
-export interface Ingredient {
-  id?: number | string;
-  name: string;
-  season?: Month[];
-}
-
-export interface IngredientWithQuantity extends Ingredient {
-  quantity: number;
-  unit: string;
-  bought?: boolean;
-}
-
 export interface NewIngredient {
   name: string;
   unit: string;
   season?: Month[];
 }
+
+export interface Ingredient extends NewIngredient {
+  id: string;
+}
+
+export interface NewIngredientWithQuantity extends NewIngredient {
+  quantity: number;
+  unit: string;
+  bought?: boolean;
+}
+
+export type IngredientWithQuantity = Ingredient & NewIngredientWithQuantity;
