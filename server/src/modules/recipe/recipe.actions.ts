@@ -1,9 +1,9 @@
 import type { RequestHandler } from "express";
 
-import { recipeRepository } from "./recipeRepo";
-import { IngredientRepository } from "../ingredient/ingredientRepo";
-import { recipeIngredientRepository } from "../recipe_ingredient/recipeIngredientRepo";
-import { listRepository } from "../list/listRepo";
+import { recipeRepository } from "./recipe.repository";
+import { IngredientRepository } from "../ingredient/ingredient.repository";
+import { recipeIngredientRepository } from "../recipe_ingredient/recipeIngredient.repository";
+import { listRepository } from "../list/list.repository";
 
 const browse: RequestHandler = async (_req, res) => {
   try {

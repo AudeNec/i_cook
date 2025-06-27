@@ -1,6 +1,6 @@
 import type { RequestHandler } from "express";
 
-import { IngredientRepository } from "./ingredientRepo";
+import { IngredientRepository } from "./ingredient.repository";
 
 const browse: RequestHandler = async (_req, res) => {
   try {

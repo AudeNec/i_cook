@@ -1,9 +1,9 @@
 import type { RequestHandler } from "express";
 
-import { listRepository } from "./listRepo";
-import { recipeIngredientRepository } from "../recipe_ingredient/recipeIngredientRepo";
-import { AggregatesRepository } from "../aggregates/aggregatesRepo";
-import { listIngredientRepository } from "../list_ingredient/listIngredientRepo";
+import { listRepository } from "./list.repository";
+import { recipeIngredientRepository } from "../recipe_ingredient/recipeIngredient.repository";
+import { AggregatesRepository } from "../aggregates/aggregate.repository";
+import { listIngredientRepository } from "../list_ingredient/listIngredient.repository";
 
 const read: RequestHandler = async (req, res) => {
   const { id } = req.params;

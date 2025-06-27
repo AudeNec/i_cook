@@ -1,7 +1,7 @@
 import express from "express";
-import recipeActions from "./modules/recipe/recipeActions";
-import ingredientActions from "./modules/ingredient/ingredientActions";
-import listActions from "./modules/list/listActions";
+import recipeActions from "./modules/recipe/recipe.actions";
+import ingredientActions from "./modules/ingredient/ingredient.actions";
+import listActions from "./modules/list/list.actions";
 
 const router = express.Router();
 

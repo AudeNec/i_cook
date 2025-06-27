@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import { listRepository } from "../list/listRepo";
-import { listIngredientRepository } from "../list_ingredient/listIngredientRepo";
+import { listRepository } from "../list/list.repository";
+import { listIngredientRepository } from "../list_ingredient/listIngredient.repository";
 
 const prisma = new PrismaClient();
 
