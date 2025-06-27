@@ -9,15 +9,15 @@ function App() {
   const hideNavBar = location.pathname === "/";
 
   return (
-    <body className="bg-primary-dark">
+    <>
       <ListProvider>
         <ToastContainer className="toast-position" stacked autoClose={3000} />
-        <main className="mx-64 flex flex-col justify-stretch content-center h-screen">
+        <main className="mx-64 flex flex-col justify-stretch content-center h-screen overflow-scroll">
           <Outlet />
         </main>
         {!hideNavBar && <Nav />}
       </ListProvider>
-    </body>
+    </>
   );
 }
 
