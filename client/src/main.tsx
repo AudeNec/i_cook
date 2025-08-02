@@ -4,12 +4,12 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import App from "@/App";
 
-import { NewRecipe } from "@/routes/NewRecipe";
 import { getRecipeDetails } from "@/services/recipe.services";
 import { Home } from "@/routes/Home";
 import { CurrentList } from "@/routes/CurrentList";
 import { RecipeDetails } from "@/routes/RecipeDetails";
 import { Recipes } from "@/routes/Recipes";
+import { NewRecipe } from "./routes/NewRecipe";
 
 const router = createBrowserRouter([
   {

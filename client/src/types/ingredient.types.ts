@@ -1,18 +1,17 @@
 import type { Month } from "@/types/month.types";
 
-export interface NewIngredient {
+export type Ingredient = {
+  id: string;
   name: string;
   unit: string;
-  season?: Month[];
-}
+  month?: Month[];
+};
 
-export interface Ingredient extends NewIngredient {
-  id: string;
-}
-
-export interface NewIngredientWithQuantity extends NewIngredient {
+export interface IngredientWithQuantity extends Ingredient {
   quantity: number;
-  bought: boolean;
 }
 
-export type IngredientWithQuantity = Ingredient & NewIngredientWithQuantity;
+export interface IngredientInRecipeForm extends IngredientWithQuantity {
+  quantity: number;
+  isNew: boolean;
+}
