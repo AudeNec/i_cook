@@ -1,9 +1,12 @@
-import type { ListData } from "@/routes/CurrentList";
-import { updateIngredientBought } from "@/services/updateIngredientBought";
-import type { IngredientWithQuantity } from "@/types/ingredient.types";
 import { toast } from "react-toastify";
-import { Checkbox } from "./animate-ui/base/checkbox";
+
+import { Checkbox } from "@/components/animate-ui/base/checkbox";
 import { Label } from "@/components/ui/label";
+
+import type { ListData } from "@/routes/CurrentList";
+
+import { updateIngredientBought } from "@/services/ingredient.services";
+import type { IngredientWithQuantity } from "@/types/ingredient.types";
 
 type ChecklistItemProps = {
   item: IngredientWithQuantity;
@@ -11,11 +14,11 @@ type ChecklistItemProps = {
   setList: React.Dispatch<React.SetStateAction<ListData | null>>;
 };
 
-export const ChecklistItem = ({
+export default function ChecklistItem({
   item,
   currentListId,
   setList,
-}: ChecklistItemProps) => {
+}: ChecklistItemProps) {
   const handleToggle = async (ingredientId: number, currentBought: boolean) => {
     try {
       await updateIngredientBought(
@@ -50,4 +53,4 @@ export const ChecklistItem = ({
       </Label>
     </div>
   );
-};
+}

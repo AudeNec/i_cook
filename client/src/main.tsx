@@ -2,14 +2,14 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import "./index.css";
-import App from "./App";
+import App from "@/App";
 
-import { Add } from "./routes/Add";
-import { getRecipeDetails } from "./services/getRecipeDetails.service";
-import { Home } from "./routes/Home";
-import { CurrentList } from "./routes/CurrentList";
-import { RecipeDetails } from "./routes/RecipeDetails";
-import { Recipes } from "./routes/Recipes";
+import { NewRecipe } from "@/routes/NewRecipe";
+import { getRecipeDetails } from "@/services/recipe.services";
+import { Home } from "@/routes/Home";
+import { CurrentList } from "@/routes/CurrentList";
+import { RecipeDetails } from "@/routes/RecipeDetails";
+import { Recipes } from "@/routes/Recipes";
 
 const router = createBrowserRouter([
   {
@@ -35,8 +35,8 @@ const router = createBrowserRouter([
         element: <CurrentList />,
       },
       {
-        path: "/recettes/ajouter",
-        element: <Add />,
+        path: "/recettes/nouvellerecette",
+        element: <NewRecipe />,
       },
     ],
   },

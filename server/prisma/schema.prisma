@@ -28,8 +28,8 @@ model Recipe {
 model Ingredient {
   id   Int    @id @default(autoincrement())
   name String @unique
-  convertible        Boolean
-
+  unit String
+  
   recipes Recipe_ingredient[]
   lists List_ingredient[]
 }
@@ -56,10 +56,4 @@ model List_ingredient {
   bought       Boolean @default(false)
 
   @@id([listId, ingredientId])
-}
-
-model Unit_Conversion {
-  id                  Int     @id @default(autoincrement())
-  unit                String @unique
-  conversion Float
 }

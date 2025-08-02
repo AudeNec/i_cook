@@ -16,9 +16,9 @@ export const IngredientRepository = {
     });
   },
 
-  readById : async (id: number) => {
+  readById: async (id: number) => {
     return await prisma.ingredient.findUnique({
       where: { id },
     });
-  }
+  },
 };

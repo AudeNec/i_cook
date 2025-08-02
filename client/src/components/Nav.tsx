@@ -11,7 +11,7 @@ export const Nav = () => {
       </Link>
       <Link
         className="font-subtitle w-1/3 text-center p-4"
-        to="/recettes/ajouter"
+        to="/recettes/nouvellerecette"
       >
         Nouvelle Recette
       </Link>

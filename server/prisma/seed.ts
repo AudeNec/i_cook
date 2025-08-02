@@ -5,44 +5,20 @@ const prisma = new PrismaClient();
 async function main() {
   console.info("🌱 Seeding database...");
 
-  await prisma.unit_Conversion.createMany({
-    data: [
-      {
-        unit: "càc",
-        conversion: 5,
-      },
-      {
-        unit: "càs",
-        conversion: 15,
-      },
-      {
-        unit: "g",
-        conversion: 1,
-      },
-      {
-        unit: "ml",
-        conversion: 1,
-      },
-    ],
-    skipDuplicates: true,
-  });
-
-  console.info(`✅ Seeded conversion table`);
-
   const ingredients = await prisma.ingredient.createMany({
     data: [
-      { name: "Oignon rouge", convertible: false },
-      { name: "Ail", convertible: false },
-      { name: "Chèvre frais", convertible: true },
-      { name: "Pâte à tarte", convertible: false },
-      { name: "Crème épaisse", convertible: true },
-      { name: "Fromage râpé", convertible: true },
-      { name: "Noix concassées", convertible: true },
-      { name: "Origan séché", convertible: true },
-      { name: "Huile d'olive", convertible: true },
-      { name: "Vinaigre balsamique noir", convertible: true },
-      { name: "Moutarde", convertible: true },
-      { name: "Miel", convertible: true },
+      { name: "Oignon rouge", unit: "pièce" },
+      { name: "Ail", unit: "gousse" },
+      { name: "Chèvre frais", unit: "g" },
+      { name: "Pâte à tarte", unit: "pièce" },
+      { name: "Crème épaisse", unit: "ml" },
+      { name: "Fromage râpé", unit: "g" },
+      { name: "Noix concassées", unit: "g" },
+      { name: "Origan séché", unit: "càc" },
+      { name: "Huile d'olive", unit: "càs" },
+      { name: "Vinaigre balsamique noir", unit: "càs" },
+      { name: "Moutarde", unit: "càc" },
+      { name: "Miel", unit: "càc" },
     ],
     skipDuplicates: true,
   });

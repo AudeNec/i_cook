@@ -1,20 +1,20 @@
 import { useForm, useFieldArray, useWatch } from "react-hook-form";
 import { useEffect, useState } from "react";
-import type { NewRecipe } from "../types/recipe.types";
-import { addRecipe } from "../services/addRecipe.service";
+import type { NewRecipeType } from "@/types/recipe.types";
 import { Header } from "@/components/Header";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { IngredientField } from "@/components/IngredientField";
 import { toast } from "react-toastify";
+import { addRecipe } from "@/services/recipe.services";
 
-export const Add = () => {
+export const NewRecipe = () => {
   const {
     register,
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<NewRecipe>();
+  } = useForm<NewRecipeType>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "ingredients",
@@ -40,7 +40,7 @@ export const Add = () => {
     })();
   }, []);
 
-  const onSubmit = async (data: NewRecipe) => {
+  const onSubmit = async (data: NewRecipeType) => {
     try {
       await addRecipe(data);
       toast.success("Recette ajoutée avec succès !");

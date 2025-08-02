@@ -1,6 +1,5 @@
-import { ChangeInListButton } from "./ChangeInListButton";
-import { InfoButton } from "./InfoButton";
-import { Card, CardFooter, CardHeader, CardTitle } from "./ui/card";
+import ChangeInListButton from "@/components/ChangeInListButton";
+import { InfoButton } from "@/components/InfoButton";
 
 type RecipeCardProps = {
   id: string;

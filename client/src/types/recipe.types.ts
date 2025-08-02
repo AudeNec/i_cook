@@ -1,5 +1,5 @@
-import type { IngredientWithQuantity } from "./ingredient.types";
-import type { Month } from "./month.types";
+import type { IngredientWithQuantity } from "@/types/ingredient.types";
+import type { Month } from "@/types/month.types";
 
 export type Recipe = {
   id: string;
@@ -13,7 +13,7 @@ export type RecipeDetails = {
   season: Month[];
 };
 
-export type NewRecipe = {
+export type NewRecipeType = {
   name: string;
   ingredients: Array<IngredientWithQuantity>;
 };

@@ -1,5 +1,5 @@
-import type { IngredientWithQuantity } from "./ingredient.types";
-import type { RecipeDetails } from "./recipe.types";
+import type { IngredientWithQuantity } from "@/types/ingredient.types";
+import type { RecipeDetails } from "@/types/recipe.types";
 
 export type List = {
   id: string;

@@ -1,7 +1,7 @@
-import { Header } from "../components/Header";
-import { HomeButton } from "../components/HomeButton";
+import { Header } from "@/components/Header";
+import { HomeButton } from "@/components/HomeButton";
 
-import homeImg from "../assets/illu/home.png";
+import homeImg from "@/assets/illu/home.png";
 
 export const Home = () => {
   return (

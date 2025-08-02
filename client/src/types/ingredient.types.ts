@@ -1,4 +1,4 @@
-import type { Month } from "./month.types";
+import type { Month } from "@/types/month.types";
 
 export interface NewIngredient {
   name: string;
@@ -12,7 +12,6 @@ export interface Ingredient extends NewIngredient {
 
 export interface NewIngredientWithQuantity extends NewIngredient {
   quantity: number;
-  unit: string;
   bought: boolean;
 }
 

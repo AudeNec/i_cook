@@ -9,6 +9,7 @@
     "dev:server": "npm run dev --workspace=server"
   },
   "dependencies": {
+    "biome": "^0.3.3",
     "concurrently": "^9.2.0"
   }
 }

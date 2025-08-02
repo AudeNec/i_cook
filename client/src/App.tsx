@@ -1,8 +1,8 @@
 import { Outlet, useLocation } from "react-router-dom";
 
-import { Nav } from "./components/Nav";
+import { Nav } from "@/components/Nav";
 import { ToastContainer } from "react-toastify";
-import { ListProvider } from "./context/ListContext";
+import { ListProvider } from "@/context/ListContext";
 
 function App() {
   const location = useLocation();

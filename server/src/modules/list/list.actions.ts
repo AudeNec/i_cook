@@ -18,7 +18,6 @@ const read: RequestHandler = async (req, res) => {
 
     const ingredientsWithQuantity = list.ingredients.map((ingredient) => ({
       name: ingredient.ingredient.name,
-      unit: ingredient.ingredient.unit,
       id: ingredient.ingredientId,
       bought: ingredient.bought,
       quantity: list.recipes
@@ -39,7 +38,6 @@ const read: RequestHandler = async (req, res) => {
         ...recipe,
         ingredients: recipe.ingredients.flatMap((ingredient) => ({
           name: ingredient.ingredient.name,
-          unit: ingredient.ingredient.unit,
           id: ingredient.ingredientId,
           quantity: ingredient.quantity,
         })),

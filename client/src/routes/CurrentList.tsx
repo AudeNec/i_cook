@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import { useCurrentList } from "../context/ListContext";
-import { fetchList } from "../services/getList.service";
+import { useCurrentList } from "@/context/ListContext";
 import { toast } from "react-toastify";
-import type { IngredientWithQuantity } from "../types/ingredient.types";
-import { ChecklistItem } from "@/components/ChecklistItem";
+import type { IngredientWithQuantity } from "@/types/ingredient.types";
+import ChecklistItem from "@/components/ChecklistItem";
 import { Header } from "@/components/Header";
 import emptyBox from "@/assets/illu/empty_box.png";
 import { Button } from "@/components/ui/button";
-import { addList } from "@/services/createList.service";
+import { createList, fetchList } from "@/services/list.services";
 
 export type ListData = {
   listId: number;
@@ -20,7 +19,7 @@ export const CurrentList = () => {
 
   const handleNewList = async () => {
     try {
-      const newListId = await addList();
+      const newListId = await createList();
 
       if (!newListId) {
         throw new Error("No new list ID returned");

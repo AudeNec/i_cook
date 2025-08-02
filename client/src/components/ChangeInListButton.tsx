@@ -1,48 +1,47 @@
 import { toast } from "react-toastify";
-import { useCurrentList } from "../context/ListContext";
-import { useState, useEffect } from "react";
-import { getIsRecipeInList } from "../services/getIsRecipeInList.service";
-
 import { ListPlus } from "lucide-react";
 import { ListX } from "lucide-react";
+import { useState, useEffect } from "react";
+
+import {
+  changeRecipeInList,
+  getIsRecipeInList,
+} from "@/services/list.services";
+import { useCurrentList } from "@/context/ListContext";
+import ErrorPage from "@/components/ErrorPage";
 
 type changeInListProps = {
   id: string;
 };
 
-export const ChangeInListButton = ({ id }: changeInListProps) => {
+export default function ChangeInListButton({ id }: changeInListProps) {
   const { currentListId } = useCurrentList();
   const [isInList, setIsInList] = useState<boolean>(false);
 
   if (!currentListId) {
-    return null;
+    return <ErrorPage error={"Ta liste de course est introuvable."} />;
   }
 
   useEffect(() => {
-    const isInList = async (listId: string, recipeId: string) => {
-      const result = await getIsRecipeInList(listId, recipeId);
-      setIsInList(result.isInList);
+    const isRecipeInList = async (listId: string, recipeId: string) => {
+      try {
+        const result = await getIsRecipeInList(listId, recipeId);
+        setIsInList(result.isInList);
+      } catch (error) {
+        toast.error("Une erreur est survenue.", { theme: "dark" });
+      }
     };
-    isInList(currentListId.toString(), id);
+
+    isRecipeInList(currentListId.toString(), id);
   }, [currentListId, id]);
 
   const changeInList = async (recipeId: string) => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/lists/recipes/${recipeId}`,
-        { method: "PUT" }
-      );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const message = await response.json();
+      const message = await changeRecipeInList(recipeId);
       setIsInList(!isInList);
       toast.success(message, { theme: "dark" });
     } catch (error) {
-      toast.error(
-        `There has been an error while changing the recipe in the list`,
-        { theme: "dark" }
-      );
+      toast.error(`Une erreur est survenue.`, { theme: "dark" });
     }
   };
 
@@ -51,9 +50,11 @@ export const ChangeInListButton = ({ id }: changeInListProps) => {
       type="button"
       onClick={() => changeInList(id)}
       onKeyUp={() => changeInList(id)}
-      className="bg-white text-primary-dark rounded-full p-2 w-10 h-10 text-lg font-bold hover:bg-primary hover:text-white cursor-pointer transition-colors duration-300 flex justify-center content-center"
+      className={`bg-white text-black flex justify-center content-center rounded-full p-2 w-10 h-10 text-lg font-bold opacity-80 ${
+        isInList ? "hover:bg-orange" : "hover:bg-primary"
+      } hover:text-white cursor-pointer transition-colors duration-300`}
     >
       {isInList ? <ListX /> : <ListPlus />}
     </button>
   );
-};
+}
