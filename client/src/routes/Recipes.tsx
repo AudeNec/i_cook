@@ -29,7 +29,7 @@ export const Recipes = () => {
   return (
     <>
       <Header title="Recettes" />
-      <section>
+      <section className="flex flex-col items-stretch justify-start">
         {recipes.map((recipe) => {
           return (
             <RecipeCard key={recipe.id} id={recipe.id} name={recipe.name} />

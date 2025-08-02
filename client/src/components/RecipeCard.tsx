@@ -9,16 +9,12 @@ type RecipeCardProps = {
 
 export const RecipeCard = ({ id, name }: RecipeCardProps) => {
   return (
-    <Card className="w-64 h-52 flex flex-col justify-between bg-primary">
-      <CardHeader>
-        <CardTitle className="text-center text-white font-paragraph">
-          {name}
-        </CardTitle>
-      </CardHeader>
-      <CardFooter className="flex justify-between">
-        <InfoButton id={id} />
+    <>
+      <article className="flex items-center justify-start text-white border-y-secondary border-y-1 px-4 py-8 gap-4 hover:bg-secondary transition-colors duration-300 relative">
         <ChangeInListButton id={id} />
-      </CardFooter>
-    </Card>
+        <h3 className="text-lg font-bold mb-2 text-center">{name}</h3>
+        <InfoButton id={id} />
+      </article>
+    </>
   );
 };

@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 
 type ListContextType = {
   currentListId: number | null;
+  setCurrentListId: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
 const ListContext = createContext<ListContextType | null>(null);
@@ -55,7 +56,7 @@ export function ListProvider({ children }: { children: ReactNode }) {
   }, []);
 
   return (
-    <ListContext.Provider value={{ currentListId }}>
+    <ListContext.Provider value={{ currentListId, setCurrentListId }}>
       {children}
     </ListContext.Provider>
   );

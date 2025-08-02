@@ -2,8 +2,9 @@ import { toast } from "react-toastify";
 import { useCurrentList } from "../context/ListContext";
 import { useState, useEffect } from "react";
 import { getIsRecipeInList } from "../services/getIsRecipeInList.service";
-import { Plus } from "./animate-ui/icons/plus";
-import { X } from "./animate-ui/icons/x";
+
+import { ListPlus } from "lucide-react";
+import { ListX } from "lucide-react";
 
 type changeInListProps = {
   id: string;
@@ -52,7 +53,7 @@ export const ChangeInListButton = ({ id }: changeInListProps) => {
       onKeyUp={() => changeInList(id)}
       className="bg-white text-primary-dark rounded-full p-2 w-10 h-10 text-lg font-bold hover:bg-primary hover:text-white cursor-pointer transition-colors duration-300 flex justify-center content-center"
     >
-      {isInList ? <X animateOnHover /> : <Plus animateOnHover />}
+      {isInList ? <ListX /> : <ListPlus />}
     </button>
   );
 };
