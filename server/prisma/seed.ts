@@ -3,27 +3,51 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log("🌱 Seeding database...");
+  console.info("🌱 Seeding database...");
 
-  const ingredients = await prisma.ingredient.createMany({
+  await prisma.unit_Conversion.createMany({
     data: [
-      { name: "Oignon rouge", unit: "pièce" },
-      { name: "Ail", unit: "gousse" },
-      { name: "Chèvre frais", unit: "g" },
-      { name: "Pâte à tarte", unit: "rouleau" },
-      { name: "Crème épaisse", unit: "g" },
-      { name: "Fromage râpé", unit: "g" },
-      { name: "Noix concassées", unit: "g" },
-      { name: "Origan séché", unit: "càc" },
-      { name: "Huile d'olive", unit: "càs" },
-      { name: "Vinaigre balsamique noir", unit: "càs" },
-      { name: "Moutarde", unit: "càc" },
-      { name: "Miel", unit: "càc" },
+      {
+        unit: "càc",
+        conversion: 5,
+      },
+      {
+        unit: "càs",
+        conversion: 15,
+      },
+      {
+        unit: "g",
+        conversion: 1,
+      },
+      {
+        unit: "ml",
+        conversion: 1,
+      },
     ],
     skipDuplicates: true,
   });
 
-  console.log(`✅ Seeded ${ingredients.count} ingredients`);
+  console.info(`✅ Seeded conversion table`);
+
+  const ingredients = await prisma.ingredient.createMany({
+    data: [
+      { name: "Oignon rouge", convertible: false },
+      { name: "Ail", convertible: false },
+      { name: "Chèvre frais", convertible: true },
+      { name: "Pâte à tarte", convertible: false },
+      { name: "Crème épaisse", convertible: true },
+      { name: "Fromage râpé", convertible: true },
+      { name: "Noix concassées", convertible: true },
+      { name: "Origan séché", convertible: true },
+      { name: "Huile d'olive", convertible: true },
+      { name: "Vinaigre balsamique noir", convertible: true },
+      { name: "Moutarde", convertible: true },
+      { name: "Miel", convertible: true },
+    ],
+    skipDuplicates: true,
+  });
+
+  console.info(`✅ Seeded ${ingredients.count} ingredients`);
 
   const recipe = await prisma.recipe.create({
     data: {
@@ -31,7 +55,7 @@ async function main() {
     },
   });
 
-  console.log(`✅ Created recipe: ${recipe.name}`);
+  console.info(`✅ Created recipe: ${recipe.name}`);
 
   const ingredientMap = await prisma.ingredient.findMany();
 
@@ -63,7 +87,7 @@ async function main() {
       {
         recipeId: recipe.id,
         ingredientId: findId("Miel"),
-        quantity: 1,
+        quantity: 5,
       },
       {
         recipeId: recipe.id,
@@ -83,29 +107,29 @@ async function main() {
       {
         recipeId: recipe.id,
         ingredientId: findId("Origan séché"),
-        quantity: 1,
+        quantity: 5,
       },
       {
         recipeId: recipe.id,
         ingredientId: findId("Huile d'olive"),
-        quantity: 2,
+        quantity: 30,
       },
       {
         recipeId: recipe.id,
         ingredientId: findId("Vinaigre balsamique noir"),
-        quantity: 2,
+        quantity: 30,
       },
       {
         recipeId: recipe.id,
         ingredientId: findId("Moutarde"),
-        quantity: 1,
+        quantity: 5,
       },
     ],
   });
 
-  console.log(`✅ Linked ingredients to recipe`);
+  console.info(`✅ Linked ingredients to recipe`);
 
-  console.log("🌱 Done seeding!");
+  console.info("🌱 Done seeding!");
 }
 
 main()

@@ -5,7 +5,9 @@
   "scripts": {
     "test": "vitest",
     "dev": "npx tsx --watch -r dotenv/config ./src/main",
-    "seed": "ts-node prisma/seed.ts"
+    "db:seed": "ts-node prisma/seed.ts",
+    "db:generate": "npx prisma generate",
+    "db:migrate": "npx prisma migrate dev"
   },
   "author": "",
   "license": "ISC",

@@ -28,7 +28,7 @@ export const Recipes = () => {
 
   return (
     <>
-      <Header content="Recettes" />
+      <Header title="Recettes" />
       <section>
         {recipes.map((recipe) => {
           return (

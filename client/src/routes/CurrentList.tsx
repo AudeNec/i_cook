@@ -35,7 +35,7 @@ export const CurrentList = () => {
 
   return (
     <section>
-      <Header content="Liste de courses" />
+      <Header title="Liste de courses" />
       {list.ingredients.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-full">
           <p className="font-subtitle text-2xl text-white">

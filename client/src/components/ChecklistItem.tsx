@@ -17,12 +17,6 @@ export const ChecklistItem = ({
   setList,
 }: ChecklistItemProps) => {
   const handleToggle = async (ingredientId: number, currentBought: boolean) => {
-    console.log(
-      "Toggling ingredient:",
-      ingredientId,
-      "Current bought state:",
-      currentBought
-    );
     try {
       await updateIngredientBought(
         currentListId!,
@@ -32,7 +26,9 @@ export const ChecklistItem = ({
       setList((prev) => {
         if (!prev) return prev;
         const newIngredients = prev.ingredients.map((ing) =>
-          ing.id === ingredientId ? { ...ing, bought: !currentBought } : ing
+          parseInt(ing.id) === ingredientId
+            ? { ...ing, bought: currentBought ? !currentBought : false }
+            : ing
         );
         return { ...prev, ingredients: newIngredients };
       });
@@ -46,7 +42,7 @@ export const ChecklistItem = ({
       <Checkbox
         id={`ing-${item.id}`}
         checked={item.bought}
-        onCheckedChange={() => handleToggle(item.id, item.bought)}
+        onCheckedChange={() => handleToggle(parseInt(item.id), item.bought)}
         className="bg-primary"
       />
       <Label htmlFor={`ing-${item.id}`} className="text-white font-paragraph">

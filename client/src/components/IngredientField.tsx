@@ -16,13 +16,6 @@ export const IngredientField = ({
     ({ id }: { id: number }) => id === parseInt(selectedId)
   );
 
-  console.log({
-    existing,
-    selectedId,
-    ingredients,
-    find: ingredients.find((i: any) => i.id === selectedId),
-  });
-
   return (
     <div key={field.id} className="m-4 flex justify-between gap-2">
       <select {...register(`ingredients.${index}.id`)}>

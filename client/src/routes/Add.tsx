@@ -42,7 +42,6 @@ export const Add = () => {
 
   const onSubmit = async (data: NewRecipe) => {
     try {
-      console.log("Submitting:", data);
       await addRecipe(data);
       toast.success("Recette ajoutée avec succès !");
     } catch (error) {
@@ -52,7 +51,7 @@ export const Add = () => {
 
   return (
     <>
-      <Header content="Ajouter une recette" />
+      <Header title="Ajouter une recette" />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-6 pb-24"
@@ -85,7 +84,13 @@ export const Add = () => {
           <Button
             type="button"
             onClick={() =>
-              append({ id: "new", unit: "", quantity: 1, name: "" })
+              append({
+                id: "new",
+                unit: "",
+                quantity: 1,
+                name: "",
+                bought: false,
+              })
             }
             variant="secondary"
           >

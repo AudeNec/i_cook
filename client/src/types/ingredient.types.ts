@@ -13,7 +13,7 @@ export interface Ingredient extends NewIngredient {
 export interface NewIngredientWithQuantity extends NewIngredient {
   quantity: number;
   unit: string;
-  bought?: boolean;
+  bought: boolean;
 }
 
 export type IngredientWithQuantity = Ingredient & NewIngredientWithQuantity;

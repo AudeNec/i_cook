@@ -5,7 +5,7 @@ export const RecipeDetails = () => {
   const recipe = useLoaderData();
   return (
     <>
-      <Header content={recipe.title} />
+      <Header title={recipe.title} />
       <section>details</section>
     </>
   );

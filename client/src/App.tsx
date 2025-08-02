@@ -12,7 +12,7 @@ function App() {
     <>
       <ListProvider>
         <ToastContainer className="toast-position" stacked autoClose={3000} />
-        <main className="mx-64 flex flex-col justify-stretch content-center h-screen overflow-scroll">
+        <main className="flex flex-col justify-stretch content-center h-screen overflow-scroll p-4">
           <Outlet />
         </main>
         {!hideNavBar && <Nav />}

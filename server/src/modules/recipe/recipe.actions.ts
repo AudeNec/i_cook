@@ -36,11 +36,8 @@ const add: RequestHandler = async (req, res) => {
     const { name, ingredients } = req.body;
     const newRecipe = await recipeRepository.create(name);
 
-    console.log("New recipe created:", newRecipe);
-
     let ingredientsWithIds;
 
-    console.log("Ingredients received:", ingredients);
     try {
       ingredientsWithIds = await Promise.all(
         ingredients.map(async (ingredient: any) => {
@@ -70,8 +67,6 @@ const add: RequestHandler = async (req, res) => {
       });
       return;
     }
-
-    console.log("Ingredients with IDs:", ingredientsWithIds);
 
     for (const ingredient of ingredientsWithIds) {
       await recipeIngredientRepository.create(

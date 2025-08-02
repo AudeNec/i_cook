@@ -18,7 +18,7 @@ model List {
 
 model Recipe {
   id        Int                  @id @default(autoincrement())
-  name      String
+  name      String @unique
   createdAt DateTime             @default(now())
 
   lists         List[]               @relation("ListRecipes")
@@ -27,8 +27,8 @@ model Recipe {
 
 model Ingredient {
   id   Int    @id @default(autoincrement())
-  name String
-  unit        String
+  name String @unique
+  convertible        Boolean
 
   recipes Recipe_ingredient[]
   lists List_ingredient[]
@@ -53,7 +53,13 @@ model List_ingredient {
   list         List       @relation("ListToIngredients", fields: [listId], references: [id])
   ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
 
-  bought       Boolean
+  bought       Boolean @default(false)
 
   @@id([listId, ingredientId])
+}
+
+model Unit_Conversion {
+  id                  Int     @id @default(autoincrement())
+  unit                String @unique
+  conversion Float
 }

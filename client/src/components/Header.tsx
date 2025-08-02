@@ -1,11 +1,19 @@
+import { Link } from "react-router-dom";
+import logo from "../assets/logos/logo_white.png";
+
 type HeaderProps = {
-  content: string;
+  title: string;
 };
 
-export const Header = ({ content }: HeaderProps) => (
-  <header className="flex flex-col justify-center content-center h-64 p-2">
-    <h1 className="text-3xl font-title text-secondary text-center">
-      {content}
-    </h1>
-  </header>
-);
+export const Header = ({ title }: HeaderProps) => {
+  return (
+    <header className="flex justify-left content-center gap-8 position-top">
+      <Link to="/">
+        <img src={logo} alt="Logo" className="w-20  object-contain px-2" />
+      </Link>
+      <div className="flex flex-col justify-center content-start">
+        <h1 className="text-4xl font-title text-white text-left">{title}</h1>
+      </div>
+    </header>
+  );
+};
