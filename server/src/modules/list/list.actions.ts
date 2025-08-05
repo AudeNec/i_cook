@@ -41,6 +41,7 @@ const read: RequestHandler = async (req, res) => {
           name: ingredient.ingredient.name,
           id: ingredient.ingredientId,
           quantity: ingredient.quantity,
+          unit: ingredient.ingredient.unit,
         })),
       })),
       ingredients: ingredientsWithQuantity,

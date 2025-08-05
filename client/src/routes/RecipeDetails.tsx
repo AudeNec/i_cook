@@ -1,4 +1,4 @@
-import { Header } from "@/components/Header";
+import Header from "@/components/Header";
 import { useLoaderData } from "react-router-dom";
 
 export const RecipeDetails = () => {

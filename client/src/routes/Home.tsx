@@ -1,4 +1,4 @@
-import { Header } from "@/components/Header";
+import Header from "@/components/Header";
 import { HomeButton } from "@/components/HomeButton";
 
 import homeImg from "@/assets/illu/home.png";

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Header } from "@/components/Header";
+import Header from "@/components/Header";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "react-toastify";
@@ -18,8 +18,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Trash } from "@/components/animate-ui/icons/trash";
-
-// TODO: file is too long, consider splitting it
 
 export const NewRecipe = () => {
   const [recipeName, setRecipeName] = useState("");

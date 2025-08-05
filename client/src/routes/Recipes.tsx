@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import type { Recipe } from "@/types/recipe.types";
-import { Header } from "@/components/Header";
+import Header from "@/components/Header";
 import { RecipeCard } from "@/components/RecipeCard";
 
 export const Recipes = () => {

@@ -5,7 +5,7 @@ type HeaderProps = {
   title: string;
 };
 
-export const Header = ({ title }: HeaderProps) => {
+export default function Header({ title }: HeaderProps) {
   return (
     <header className="flex justify-left content-center gap-8 position-top pb-4">
       <Link to="/">
@@ -16,4 +16,4 @@ export const Header = ({ title }: HeaderProps) => {
       </div>
     </header>
   );
-};
+}

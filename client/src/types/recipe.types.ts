@@ -1,4 +1,7 @@
-import type { IngredientWithQuantity } from "@/types/ingredient.types";
+import type {
+  IngredientInChecklist,
+  IngredientWithQuantity,
+} from "@/types/ingredient.types";
 import type { Month } from "@/types/month.types";
 
 export type Recipe = {
@@ -9,7 +12,7 @@ export type Recipe = {
 export type RecipeDetails = {
   id: string;
   name: string;
-  ingredients: IngredientWithQuantity[];
+  ingredients: IngredientInChecklist[];
   season: Month[];
 };
 

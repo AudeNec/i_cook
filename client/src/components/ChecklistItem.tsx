@@ -3,15 +3,15 @@ import { toast } from "react-toastify";
 import { Checkbox } from "@/components/animate-ui/base/checkbox";
 import { Label } from "@/components/ui/label";
 
-import type { ListData } from "@/routes/CurrentList";
-
 import { updateIngredientBought } from "@/services/ingredient.services";
+
 import type { IngredientInChecklist } from "@/types/ingredient.types";
+import type { List } from "@/types/list.types";
 
 type ChecklistItemProps = {
   item: IngredientInChecklist;
   currentListId: number;
-  setList: React.Dispatch<React.SetStateAction<ListData | null>>;
+  setList: React.Dispatch<React.SetStateAction<List | null>>;
 };
 
 export default function ChecklistItem({
