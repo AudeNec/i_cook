@@ -6,10 +6,10 @@ import { Label } from "@/components/ui/label";
 import type { ListData } from "@/routes/CurrentList";
 
 import { updateIngredientBought } from "@/services/ingredient.services";
-import type { IngredientWithQuantity } from "@/types/ingredient.types";
+import type { IngredientInChecklist } from "@/types/ingredient.types";
 
 type ChecklistItemProps = {
-  item: IngredientWithQuantity;
+  item: IngredientInChecklist;
   currentListId: number;
   setList: React.Dispatch<React.SetStateAction<ListData | null>>;
 };

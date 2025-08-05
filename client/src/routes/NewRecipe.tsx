@@ -9,13 +9,7 @@ import type {
   IngredientInRecipeForm,
 } from "@/types/ingredient.types";
 import { fetchIngredients } from "@/services/ingredient.services";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableRow,
-} from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import {
   Select,
   SelectContent,
@@ -23,6 +17,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Trash } from "@/components/animate-ui/icons/trash";
+
+// TODO: file is too long, consider splitting it
 
 export const NewRecipe = () => {
   const [recipeName, setRecipeName] = useState("");
@@ -130,15 +127,21 @@ export const NewRecipe = () => {
           <TableBody>
             {recipeIngredients.map((ingredient, index) => (
               <TableRow key={index}>
-                <TableCell>
+                <TableCell className="w-1/2">
                   {!ingredient.isNew ? (
-                    <Select>
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Choisir" />
+                    <Select
+                      onValueChange={(value: string) =>
+                        updateIngredient(index, "id", value)
+                      }
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Choisir">
+                          {ingredient.name}
+                        </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         {existingIngredients.map((ing) => (
-                          <SelectItem key={ing.id} value={ing.name}>
+                          <SelectItem key={ing.id} value={ing.id}>
                             {ing.name}
                           </SelectItem>
                         ))}
@@ -155,7 +158,7 @@ export const NewRecipe = () => {
                   )}
                 </TableCell>
 
-                <TableCell>
+                <TableCell className="w-1/6">
                   <Input
                     type="string"
                     step="any"
@@ -171,33 +174,37 @@ export const NewRecipe = () => {
                   />
                 </TableCell>
 
-                {ingredient.isNew ? (
-                  <Input
-                    placeholder="Unité (g, ml...)"
-                    value={ingredient.unit}
-                    onChange={(e) =>
-                      updateIngredient(index, "unit", e.target.value)
-                    }
-                  />
-                ) : (
-                  <p className="flex items-center px-3">
-                    <strong>{ingredient.unit}</strong>
-                  </p>
-                )}
+                <TableCell className="w-1/4">
+                  {ingredient.isNew ? (
+                    <Input
+                      placeholder="Unité"
+                      value={ingredient.unit}
+                      onChange={(e) =>
+                        updateIngredient(index, "unit", e.target.value)
+                      }
+                    />
+                  ) : (
+                    <p className="flex items-center px-3 text-white">
+                      {ingredient.unit}
+                    </p>
+                  )}
+                </TableCell>
 
-                <Button
-                  variant="ghost"
-                  type="button"
-                  onClick={() => removeIngredient(index)}
-                >
-                  ✕
-                </Button>
+                <TableCell>
+                  <Button
+                    variant="ghost"
+                    type="button"
+                    onClick={() => removeIngredient(index)}
+                  >
+                    <Trash />
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 px-4">
           <Button
             type="button"
             onClick={() => addIngredient({ isNew: false })}
@@ -216,7 +223,10 @@ export const NewRecipe = () => {
           </Button>
         </div>
 
-        <Button type="submit" className="bg-secondary hover:bg-secondary-dark">
+        <Button
+          type="submit"
+          className="bg-secondary hover:bg-secondary-dark m-4"
+        >
           Enregistrer
         </Button>
       </form>

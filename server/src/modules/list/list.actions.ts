@@ -30,6 +30,7 @@ const read: RequestHandler = async (req, res) => {
           );
           return total + (recipeIngredient?.quantity || 0);
         }, 0),
+      unit: ingredient.ingredient.unit,
     }));
 
     res.status(200).json({

@@ -15,3 +15,8 @@ export interface IngredientInRecipeForm extends IngredientWithQuantity {
   quantity: number;
   isNew: boolean;
 }
+
+export interface IngredientInChecklist extends IngredientWithQuantity {
+  bought: boolean;
+  quantity: number;
+}
