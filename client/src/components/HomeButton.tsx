@@ -5,7 +5,7 @@ type HomeButtonProps = {
   title: string;
 };
 
-export const HomeButton = ({ link, title }: HomeButtonProps) => {
+export default function HomeButton({ link, title }: HomeButtonProps) {
   return (
     <button className="bg-secondary-dark rounded-lg p-4">
       <Link
@@ -16,4 +16,4 @@ export const HomeButton = ({ link, title }: HomeButtonProps) => {
       </Link>
     </button>
   );
-};
+}

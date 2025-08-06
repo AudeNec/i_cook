@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+
 import { fetchList, createList } from "@/services/list.services";
 import { useCurrentList } from "@/context/ListContext";
-import { toast } from "react-toastify";
+
 import type { List } from "@/types/list.types";
 
-export function useCurrentListData() {
+export const useCurrentListData = () => {
   const { currentListId, setCurrentListId } = useCurrentList();
   const [list, setList] = useState<List | null>(null);
 
@@ -36,4 +38,4 @@ export function useCurrentListData() {
   };
 
   return { list, setList, handleNewList, currentListId };
-}
+};

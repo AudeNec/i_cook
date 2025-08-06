@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+
 import logo from "@/assets/logos/logo_white.png";
 
 type HeaderProps = {

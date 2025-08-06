@@ -1,13 +1,14 @@
-import { toast } from "react-toastify";
 import { ListPlus } from "lucide-react";
 import { ListX } from "lucide-react";
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
 
+import { useCurrentList } from "@/context/ListContext";
 import {
   changeRecipeInList,
   getIsRecipeInList,
 } from "@/services/list.services";
-import { useCurrentList } from "@/context/ListContext";
+
 import ErrorPage from "@/components/ErrorPage";
 
 type changeInListProps = {

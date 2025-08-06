@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import type { Recipe } from "@/types/recipe.types";
+
 import Header from "@/components/Header";
-import { RecipeCard } from "@/components/RecipeCard";
+import RecipeCard from "@/components/RecipeCard";
+
+import type { Recipe } from "@/types/recipe.types";
 
 export const Recipes = () => {
   const [recipes, setRecipes] = useState<Recipe[]>([]);

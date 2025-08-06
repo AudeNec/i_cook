@@ -1,12 +1,13 @@
+import { useState } from "react";
+
+import { Button } from "@/components/ui/button";
+
+import { useCurrentListData } from "@/hooks/useCurrentListData";
+
 import ChecklistItem from "@/components/ChecklistItem";
 import EmptyBox from "@/components/EmptyBox";
 import Header from "@/components/Header";
 import ListByRecipe from "@/components/ListByRecipe";
-
-import { Button } from "@/components/ui/button";
-
-import { useCurrentListData } from "@/hooks/useCurrentList";
-import { useState } from "react";
 
 export const CurrentList = () => {
   const { list, setList, handleNewList } = useCurrentListData();

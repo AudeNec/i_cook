@@ -1,7 +1,8 @@
 import ChecklistItem from "./ChecklistItem";
+
 import type { Dispatch } from "react";
-import type React from "react";
 import type { List } from "@/types/list.types";
+import type React from "react";
 
 type ListByRecipeProps = {
   list: List;

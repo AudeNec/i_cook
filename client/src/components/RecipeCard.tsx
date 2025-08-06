@@ -1,12 +1,12 @@
 import ChangeInListButton from "@/components/ChangeInListButton";
-import { InfoButton } from "@/components/InfoButton";
+import InfoButton from "@/components/InfoButton";
 
 type RecipeCardProps = {
   id: string;
   name: string;
 };
 
-export const RecipeCard = ({ id, name }: RecipeCardProps) => {
+export default function RecipeCard({ id, name }: RecipeCardProps) {
   return (
     <>
       <article className="flex items-center justify-start text-white border-y-secondary border-y-1 px-4 py-8 gap-4 hover:bg-secondary transition-colors duration-300 relative">
@@ -16,4 +16,4 @@ export const RecipeCard = ({ id, name }: RecipeCardProps) => {
       </article>
     </>
   );
-};
+}
