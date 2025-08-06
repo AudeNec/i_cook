@@ -20,8 +20,13 @@ export const useFormHandle = ({
   existingIngredients,
   recipeName,
   setRecipeName,
-}: useFormHandleProps) => {
-  const addIngredient = ({ isNew }: { isNew: boolean }) => {
+}: useFormHandleProps): {
+  addIngredient: ({ isNew }: { isNew: boolean }) => void;
+  removeIngredient: (index: number) => void;
+  updateIngredient: (index: number, field: string, value: any) => void;
+  handleSubmit: (e: React.FormEvent) => Promise<void>;
+} => {
+  const addIngredient = ({ isNew }: { isNew: boolean }): void => {
     setRecipeIngredients([
       ...recipeIngredients,
       {
@@ -34,11 +39,11 @@ export const useFormHandle = ({
     ]);
   };
 
-  const removeIngredient = (index: number) => {
+  const removeIngredient = (index: number): void => {
     setRecipeIngredients(recipeIngredients.filter((_, i) => i !== index));
   };
 
-  const updateIngredient = (index: number, field: string, value: any) => {
+  const updateIngredient = (index: number, field: string, value: any): void => {
     const updated = [...recipeIngredients];
     updated[index] = { ...updated[index], [field]: value };
 
@@ -53,7 +58,7 @@ export const useFormHandle = ({
     setRecipeIngredients(updated);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
     if (!recipeName.trim()) {

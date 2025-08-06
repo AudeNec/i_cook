@@ -6,7 +6,12 @@ import { useCurrentList } from "@/context/ListContext";
 
 import type { List } from "@/types/list.types";
 
-export const useCurrentListData = () => {
+export const useCurrentListData = (): {
+  list: List | null;
+  setList: React.Dispatch<React.SetStateAction<List | null>>;
+  handleNewList: () => Promise<void>;
+  currentListId: number | null;
+} => {
   const { currentListId, setCurrentListId } = useCurrentList();
   const [list, setList] = useState<List | null>(null);
 
@@ -25,7 +30,7 @@ export const useCurrentListData = () => {
     getList();
   }, [currentListId]);
 
-  const handleNewList = async () => {
+  const handleNewList = async (): Promise<void> => {
     try {
       const newListId = await createList();
       if (!newListId) throw new Error("No new list ID returned");

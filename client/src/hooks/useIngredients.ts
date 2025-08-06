@@ -4,7 +4,11 @@ import { fetchIngredients } from "@/services/ingredient.services";
 
 import type { IngredientInRecipeForm } from "@/types/ingredient.types";
 
-export const useIngredients = () => {
+export const useIngredients = (): {
+  ingredients: IngredientInRecipeForm[];
+  loading: boolean;
+  error: string | null;
+} => {
   const [ingredients, setIngredients] = useState<IngredientInRecipeForm[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
