@@ -4,14 +4,25 @@ import { listIngredientRepository } from "../list_ingredient/listIngredient.repo
 
 const prisma = new PrismaClient();
 
-export const AggregatesRepository = {
-  updateList: async (
+interface AggregateRepositoryInterface {
+  updateList(
     action: "add" | "delete",
     listId: number,
     recipeId: number,
     ingredientIds: number[]
-  ) => {
-    return await prisma.$transaction([
+  ): Promise<void>;
+}
+
+export default class AggregateRepository
+  implements AggregateRepositoryInterface
+{
+  async updateList(
+    action: "add" | "delete",
+    listId: number,
+    recipeId: number,
+    ingredientIds: number[]
+  ): Promise<void> {
+    await prisma.$transaction([
       listRepository.update(action, listId, recipeId),
       ...ingredientIds?.map((ingredientId) =>
         action === "delete"
@@ -19,5 +30,5 @@ export const AggregatesRepository = {
           : listIngredientRepository.create(listId, ingredientId)
       ),
     ]);
-  },
-};
+  }
+}
