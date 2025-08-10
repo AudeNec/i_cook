@@ -2,8 +2,10 @@ import type { RequestHandler } from "express";
 
 import { listRepository } from "./list.repository";
 import { recipeIngredientRepository } from "../recipe_ingredient/recipeIngredient.repository";
-import { AggregatesRepository } from "../aggregates/aggregate.repository";
+import AggregateRepository from "../aggregates/aggregate.repository";
 import { listIngredientRepository } from "../list_ingredient/listIngredient.repository";
+
+const aggregateRepository = new AggregateRepository();
 
 const read: RequestHandler = async (req, res) => {
   const { id } = req.params;
@@ -58,6 +60,8 @@ const findCurrent: RequestHandler = async (_req, res) => {
   try {
     const currentListId = await listRepository.readCurrentId();
 
+    console.log("Current List ID:", currentListId);
+
     if (!currentListId) {
       res.status(404).json({ error: "No current list found." });
       return;
@@ -94,6 +98,8 @@ const changeRecipe: RequestHandler = async (req, res) => {
       listRepository.readCurrent(),
     ]);
 
+    console.log("Current List:", list);
+
     if (!list) {
       res.status(404).json({ error: "List not found." });
       return;
@@ -115,7 +121,7 @@ const changeRecipe: RequestHandler = async (req, res) => {
         (id) => !stillUsedIds.has(id)
       );
 
-      await AggregatesRepository.updateList(
+      await aggregateRepository.updateList(
         "delete",
         listId,
         recipeId,
@@ -132,7 +138,7 @@ const changeRecipe: RequestHandler = async (req, res) => {
         (id) => !existingIngredientIds.has(id)
       );
 
-      await AggregatesRepository.updateList("add", listId, recipeId, toAdd);
+      await aggregateRepository.updateList("add", listId, recipeId, toAdd);
 
       res.status(200).json({ message: "Recipe added to list." });
     }
