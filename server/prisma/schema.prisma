@@ -12,7 +12,6 @@ model List {
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt
 
-  recipes     Recipe[]          @relation("ListRecipes")
   ingredients List_ingredient[] @relation("ListToIngredients")
 }
 
@@ -21,7 +20,6 @@ model Recipe {
   name      String @unique
   createdAt DateTime             @default(now())
 
-  lists         List[]               @relation("ListRecipes")
   ingredients Recipe_ingredient[]
 }
 
@@ -35,13 +33,15 @@ model Ingredient {
 }
 
 model Recipe_ingredient {
-  recipeId    Int
+  recipeId     Int
   ingredientId Int
 
-  recipe      Recipe     @relation(fields: [recipeId], references: [id])
-  ingredient  Ingredient @relation(fields: [ingredientId], references: [id])
+  recipe       Recipe     @relation(fields: [recipeId], references: [id])
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  
+  quantity     Float
 
-  quantity    Float
+  listRecipeIngredients List_Recipe_Ingredient[]
 
   @@id([recipeId, ingredientId])
 }
@@ -52,8 +52,22 @@ model List_ingredient {
 
   list         List       @relation("ListToIngredients", fields: [listId], references: [id])
   ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  
+  recipeIngredients List_Recipe_Ingredient[]
 
   bought       Boolean @default(false)
 
   @@id([listId, ingredientId])
+}
+
+model List_Recipe_Ingredient {
+  listId             Int
+  ingredientId       Int
+  recipeId           Int
+  recipeIngredientId Int
+
+  listIngredient     List_ingredient   @relation(fields: [listId, ingredientId], references: [listId, ingredientId])
+  recipeIngredient   Recipe_ingredient @relation(fields: [recipeId, recipeIngredientId], references: [recipeId, ingredientId])
+
+  @@id([listId, ingredientId, recipeId, recipeIngredientId])
 }

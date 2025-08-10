@@ -7,18 +7,18 @@ export const listRepository = {
     return await prisma.list.findUnique({
       where: { id: listId },
       include: {
-        recipes: {
-          include: {
-            ingredients: {
-              include: {
-                ingredient: true,
-              },
-            },
-          },
-        },
         ingredients: {
           include: {
             ingredient: true,
+            recipeIngredients: {
+              include: {
+                recipeIngredient: {
+                  include: {
+                    recipe: true,
+                  },
+                },
+              },
+            },
           },
         },
       },
@@ -36,8 +36,17 @@ export const listRepository = {
     return await prisma.list.findFirst({
       orderBy: { createdAt: "desc" },
       include: {
-        recipes: { select: { id: true } },
-        ingredients: { select: { ingredientId: true } },
+        ingredients: {
+          select: {
+            ingredientId: true,
+            listId: true,
+            recipeIngredients: {
+              select: {
+                recipeId: true,
+              },
+            },
+          },
+        },
       },
     });
   },
@@ -49,23 +58,90 @@ export const listRepository = {
     return newList.id;
   },
 
-  update: (action: "add" | "delete", listId: number, recipeId: number) => {
-    return prisma.list.update({
+  addRecipeToList: async (listId: number, recipeId: number) => {
+    const recipeIngredients = await prisma.recipe_ingredient.findMany({
+      where: { recipeId },
+    });
+
+    for (const recipeIngredient of recipeIngredients) {
+      await prisma.list_ingredient.upsert({
+        where: {
+          listId_ingredientId: {
+            listId,
+            ingredientId: recipeIngredient.ingredientId,
+          },
+        },
+        update: {},
+        create: {
+          listId,
+          ingredientId: recipeIngredient.ingredientId,
+        },
+      });
+
+      await prisma.list_Recipe_Ingredient.upsert({
+        where: {
+          listId_ingredientId_recipeId_recipeIngredientId: {
+            listId,
+            ingredientId: recipeIngredient.ingredientId,
+            recipeId,
+            recipeIngredientId: recipeIngredient.ingredientId,
+          },
+        },
+        update: {},
+        create: {
+          listId,
+          ingredientId: recipeIngredient.ingredientId,
+          recipeId,
+          recipeIngredientId: recipeIngredient.ingredientId,
+        },
+      });
+    }
+
+    return await prisma.list.findUnique({
       where: { id: listId },
-      data: {
-        recipes:
-          action === "delete"
-            ? { disconnect: { id: recipeId } }
-            : { connect: { id: recipeId } },
+    });
+  },
+
+  removeRecipeFromList: async (listId: number, recipeId: number) => {
+    await prisma.list_Recipe_Ingredient.deleteMany({
+      where: {
+        listId,
+        recipeId,
       },
+    });
+
+    const orphanedIngredients = await prisma.list_ingredient.findMany({
+      where: {
+        listId,
+        recipeIngredients: {
+          none: {},
+        },
+      },
+    });
+
+    if (orphanedIngredients.length > 0) {
+      await prisma.list_ingredient.deleteMany({
+        where: {
+          listId,
+          ingredientId: {
+            in: orphanedIngredients.map((ing) => ing.ingredientId),
+          },
+        },
+      });
+    }
+
+    return await prisma.list.findUnique({
+      where: { id: listId },
     });
   },
 
   isRecipeInList: async (recipeId: number, listId: number) => {
-    const list = await prisma.list.findUnique({
-      where: { id: listId },
-      include: { recipes: true },
+    const junctionRecords = await prisma.list_Recipe_Ingredient.findMany({
+      where: {
+        listId,
+        recipeId,
+      },
     });
-    return list ? list.recipes.some((recipe) => recipe.id === recipeId) : false;
-  }
+    return junctionRecords.length > 0;
+  },
 };

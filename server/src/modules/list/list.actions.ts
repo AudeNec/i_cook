@@ -1,11 +1,7 @@
 import type { RequestHandler } from "express";
 
 import { listRepository } from "./list.repository";
-import { recipeIngredientRepository } from "../recipe_ingredient/recipeIngredient.repository";
-import AggregateRepository from "../aggregates/aggregate.repository";
 import { listIngredientRepository } from "../list_ingredient/listIngredient.repository";
-
-const aggregateRepository = new AggregateRepository();
 
 const read: RequestHandler = async (req, res) => {
   const { id } = req.params;
@@ -18,39 +14,31 @@ const read: RequestHandler = async (req, res) => {
       return;
     }
 
-    const ingredientsWithQuantity = list.ingredients.map((ingredient) => ({
-      name: ingredient.ingredient.name,
-      id: ingredient.ingredientId,
-      bought: ingredient.bought,
-      quantity: list.recipes
-        .filter(({ ingredients }) =>
-          ingredients.some((i) => i.ingredientId === ingredient.ingredientId)
-        )
-        .reduce((total, recipe) => {
-          const recipeIngredient = recipe.ingredients.find(
-            (i) => i.ingredientId === ingredient.ingredientId
-          );
-          return total + (recipeIngredient?.quantity || 0);
-        }, 0),
-      unit: ingredient.ingredient.unit,
-    }));
+    const ingredients = list.ingredients.map((ingredient) => {
+      const recipes = ingredient.recipeIngredients.map((ri) => ({
+        recipeId: ri.recipeIngredient.recipe.id,
+        recipeName: ri.recipeIngredient.recipe.name,
+        ingredientQuantity: ri.recipeIngredient.quantity,
+      }));
+
+      const quantity = recipes.reduce(
+        (total, recipe) => total + recipe.ingredientQuantity,
+        0
+      );
+
+      return {
+        id: ingredient.ingredientId,
+        name: ingredient.ingredient.name,
+        unit: ingredient.ingredient.unit,
+        bought: ingredient.bought,
+        quantity,
+        recipes,
+      };
+    });
 
     res.status(200).json({
       listId: list.id,
-      recipes: list.recipes.map((recipe) => ({
-        ...recipe,
-        ingredients: recipe.ingredients.flatMap((ingredient) => ({
-          name: ingredient.ingredient.name,
-          id: ingredient.ingredientId,
-          quantity: ingredient.quantity,
-          unit: ingredient.ingredient.unit,
-          bought:
-            ingredientsWithQuantity.find(
-              (i) => i.id === ingredient.ingredientId
-            )?.bought || false,
-        })),
-      })),
-      ingredients: ingredientsWithQuantity,
+      ingredients,
     });
   } catch (error) {
     console.error("Error in read:", error);
@@ -63,8 +51,6 @@ const read: RequestHandler = async (req, res) => {
 const findCurrent: RequestHandler = async (_req, res) => {
   try {
     const currentListId = await listRepository.readCurrentId();
-
-    console.log("Current List ID:", currentListId);
 
     if (!currentListId) {
       res.status(404).json({ error: "No current list found." });
@@ -97,53 +83,21 @@ const changeRecipe: RequestHandler = async (req, res) => {
   const recipeId = parseInt(req.params.id);
 
   try {
-    const [recipeIngredients, list] = await Promise.all([
-      recipeIngredientRepository.readByRecipeId(recipeId),
-      listRepository.readCurrent(),
-    ]);
-
-    console.log("Current List:", list);
+    const list = await listRepository.readCurrent();
 
     if (!list) {
       res.status(404).json({ error: "List not found." });
       return;
     }
 
-    const isInList = list.recipes.some((r) => r.id === recipeId);
     const listId = list.id;
-    const recipeIngredientIds = recipeIngredients.map((ri) => ri.ingredientId);
+    const isInList = await listRepository.isRecipeInList(recipeId, listId);
 
     if (isInList) {
-      const otherUsages = await recipeIngredientRepository.readOtherUsages(
-        recipeIngredientIds,
-        recipeId,
-        listId
-      );
-
-      const stillUsedIds = new Set(otherUsages.map((ri) => ri.ingredientId));
-      const toRemove = recipeIngredientIds.filter(
-        (id) => !stillUsedIds.has(id)
-      );
-
-      await aggregateRepository.updateList(
-        "delete",
-        listId,
-        recipeId,
-        toRemove
-      );
-
+      await listRepository.removeRecipeFromList(listId, recipeId);
       res.status(200).json({ message: "Recipe removed from list." });
     } else {
-      const existingIngredientIds = new Set(
-        list.ingredients.map((i) => i.ingredientId)
-      );
-
-      const toAdd = recipeIngredientIds.filter(
-        (id) => !existingIngredientIds.has(id)
-      );
-
-      await aggregateRepository.updateList("add", listId, recipeId, toAdd);
-
+      await listRepository.addRecipeToList(listId, recipeId);
       res.status(200).json({ message: "Recipe added to list." });
     }
   } catch (error) {
