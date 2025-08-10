@@ -6,7 +6,7 @@ import { useCurrentList } from "@/context/ListContext";
 
 import type { List } from "@/types/list.types";
 
-export const useCurrentListData = (): {
+export const useChecklist = (): {
   list: List | null;
   setList: React.Dispatch<React.SetStateAction<List | null>>;
   handleNewList: () => Promise<void>;

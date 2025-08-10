@@ -1,7 +1,6 @@
 import { toast } from "react-toastify";
 
 import { Checkbox } from "@/components/animate-ui/base/checkbox";
-import { Label } from "@/components/ui/label";
 
 import { updateIngredientBought } from "@/services/ingredient.services";
 
@@ -46,9 +45,9 @@ export default function ChecklistItem({ item, setList }: ChecklistItemProps) {
         onCheckedChange={() => handleToggle(parseInt(item.id), item.bought)}
         className="bg-primary"
       />
-      <Label htmlFor={`ing-${item.id}`} className="text-white font-paragraph">
+      <label htmlFor={`ing-${item.id}`} className="text-white font-paragraph">
         {item.name} - {item.quantity} {item.unit}
-      </Label>
+      </label>
     </div>
   );
 }

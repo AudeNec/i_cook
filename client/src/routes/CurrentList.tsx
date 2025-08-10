@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 
-import { useCurrentListData } from "@/hooks/useCurrentListData";
+import { useChecklist } from "@/hooks/useChecklist";
 
 import ChecklistItem from "@/components/ChecklistItem";
 import EmptyBox from "@/components/EmptyBox";
@@ -10,7 +10,7 @@ import Header from "@/components/Header";
 import ListByRecipe from "@/components/ListByRecipe";
 
 export const CurrentList = () => {
-  const { list, setList, handleNewList } = useCurrentListData();
+  const { list, setList, handleNewList } = useChecklist();
   const [displayRecipe, setDisplayRecipe] = useState(false);
 
   if (!list) return <p>Chargement...</p>;

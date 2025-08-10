@@ -19,4 +19,9 @@ export interface IngredientInRecipeForm extends IngredientWithQuantity {
 export interface IngredientInChecklist extends IngredientWithQuantity {
   bought: boolean;
   quantity: number;
+  recipes?: {
+    recipeId: number;
+    recipeName: string;
+    ingredientQuantity: number;
+  }[];
 }

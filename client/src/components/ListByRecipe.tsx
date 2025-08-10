@@ -3,6 +3,7 @@ import ChecklistItem from "./ChecklistItem";
 import type { Dispatch } from "react";
 import type { List } from "@/types/list.types";
 import type React from "react";
+import { useChecklistByRecipe } from "@/hooks/useChecklistByRecipe";
 
 type ListByRecipeProps = {
   list: List;
@@ -10,9 +11,11 @@ type ListByRecipeProps = {
 };
 
 export default function ListByRecipe({ list, setList }: ListByRecipeProps) {
+  const listByRecipe = useChecklistByRecipe(list.ingredients);
+
   return (
     <div className="flex flex-col gap-8">
-      {list.recipes.map((recipe) => (
+      {listByRecipe.map((recipe) => (
         <div key={recipe.id}>
           <h3 className="text-lg font-semibold text-white pb-4 pl-8">
             {recipe.name}
@@ -21,7 +24,6 @@ export default function ListByRecipe({ list, setList }: ListByRecipeProps) {
             {recipe.ingredients.map((ingredient) => (
               <ChecklistItem
                 item={ingredient}
-                currentListId={list.id}
                 setList={setList}
                 key={ingredient.id}
               />
