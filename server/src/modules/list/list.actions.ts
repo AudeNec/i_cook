@@ -44,6 +44,10 @@ const read: RequestHandler = async (req, res) => {
           id: ingredient.ingredientId,
           quantity: ingredient.quantity,
           unit: ingredient.ingredient.unit,
+          bought:
+            ingredientsWithQuantity.find(
+              (i) => i.id === ingredient.ingredientId
+            )?.bought || false,
         })),
       })),
       ingredients: ingredientsWithQuantity,

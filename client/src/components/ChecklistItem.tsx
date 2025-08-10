@@ -7,18 +7,16 @@ import { updateIngredientBought } from "@/services/ingredient.services";
 
 import type { IngredientInChecklist } from "@/types/ingredient.types";
 import type { List } from "@/types/list.types";
+import { useCurrentList } from "@/context/ListContext";
 
 type ChecklistItemProps = {
   item: IngredientInChecklist;
-  currentListId: number;
   setList: React.Dispatch<React.SetStateAction<List | null>>;
 };
 
-export default function ChecklistItem({
-  item,
-  currentListId,
-  setList,
-}: ChecklistItemProps) {
+export default function ChecklistItem({ item, setList }: ChecklistItemProps) {
+  const { currentListId } = useCurrentList();
+
   const handleToggle = async (ingredientId: number, currentBought: boolean) => {
     try {
       await updateIngredientBought(

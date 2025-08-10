@@ -39,7 +39,6 @@ export const CurrentList = () => {
                 {list.ingredients.map((ingredient) => (
                   <ChecklistItem
                     item={ingredient}
-                    currentListId={list.id}
                     setList={setList}
                     key={ingredient.id}
                   />
